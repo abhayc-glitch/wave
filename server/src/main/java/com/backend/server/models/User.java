@@ -10,6 +10,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -29,6 +30,7 @@ import lombok.Setter;
 @NoArgsConstructor
 // Class is an entity and is mapped to a database table
 @Entity
+@Table(name = "users")
 public class User implements UserDetails{
     @Id
     // Generates a primary key to be created when mapping the user entity.

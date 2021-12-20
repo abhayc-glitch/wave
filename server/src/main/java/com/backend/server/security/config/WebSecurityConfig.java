@@ -19,8 +19,8 @@ import lombok.AllArgsConstructor;
 // Http Security
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private final UserService userService;
-    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private UserService userService;
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
