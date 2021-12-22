@@ -43,8 +43,8 @@ public class User implements UserDetails{
         generator = "user_sequence"
     )
     private Long id;
-    private String username;
-    private String name;
+    private String firstName;
+    private String lastName;
     private String password;
     private String email;
     @Enumerated(EnumType.STRING)
@@ -53,20 +53,16 @@ public class User implements UserDetails{
     private Boolean enabled;
 
 
-    public User(String name,
-                String username,
+    public User(String firstName,
+                String lastName,
                 String password,
                 String email,
-                UserRole userRole,
-                Boolean locked,
-                Boolean enabled) {
-                    this.name = name;
-                    this.username = username;
+                UserRole userRole) {
+                    this.firstName = firstName;
+                    this.lastName = lastName;
                     this.password = password;
                     this.email = email;
                     this.userRole = userRole;
-                    this.locked = locked;
-                    this.enabled = enabled;
     }
     // Returns an array of authorities granted to the user
     // Authorities like accessing certain APi's for registration
@@ -83,7 +79,15 @@ public class User implements UserDetails{
 
     @Override
     public String getUsername() {
-        return username;
+        return email;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
     }
 
     @Override
@@ -105,5 +109,87 @@ public class User implements UserDetails{
     public boolean isEnabled() {
         return enabled;
     }
+
+    public String getEmail() {
+        return email;
+    }
     
+
+    /**
+     * @return Long return the id
+     */
+    public Long getId() {
+        return id;
+    }
+
+    /**
+     * @param id the id to set
+     */
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    /**
+     * @param firstName the firstName to set
+     */
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    /**
+     * @param lastName the lastName to set
+     */
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    /**
+     * @param password the password to set
+     */
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    /**
+     * @param email the email to set
+     */
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    /**
+     * @return UserRole return the userRole
+     */
+    public UserRole getUserRole() {
+        return userRole;
+    }
+
+    /**
+     * @param userRole the userRole to set
+     */
+    public void setUserRole(UserRole userRole) {
+        this.userRole = userRole;
+    }
+
+    /**
+     * @return Boolean return the locked
+     */
+    public Boolean isLocked() {
+        return locked;
+    }
+
+    /**
+     * @param locked the locked to set
+     */
+    public void setLocked(Boolean locked) {
+        this.locked = locked;
+    }
+
+    /**
+     * @param enabled the enabled to set
+     */
+    public void setEnabled(Boolean enabled) {
+        this.enabled = enabled;
+    }
+
 }
