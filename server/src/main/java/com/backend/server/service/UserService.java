@@ -1,5 +1,9 @@
 package com.backend.server.service;
 
+import java.time.LocalDateTime;
+import java.util.UUID;
+
+import com.backend.server.models.ConfirmationToken;
 import com.backend.server.models.User;
 import com.backend.server.repository.UserRepository;
 
@@ -19,6 +23,7 @@ public class UserService implements UserDetailsService{
     // Is the final immutable state always necessary
     private UserRepository userRepository;
     private BCryptPasswordEncoder bCryptPasswordEncoder;
+    private ConfirmationTokenService confirmationTokenService;
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
@@ -40,9 +45,19 @@ public class UserService implements UserDetailsService{
 
         userRepository.save(user);
 
-        // TODO: send conformation Token
+        String token = UUID.randomUUID().toString();
+        ConfirmationToken confirmationToken = new ConfirmationToken(
+            token, 
+            LocalDateTime.now(),
+            LocalDateTime.now().plusMinutes(15),
+            user
+        );
         
-        return "signup successful";
+        confirmationTokenService.saveConfirmationToken(confirmationToken);
+
+        // TODO send the email
+
+        return token;
     }
     
 }
