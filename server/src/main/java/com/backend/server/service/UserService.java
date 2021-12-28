@@ -20,7 +20,7 @@ import lombok.AllArgsConstructor;
 public class UserService implements UserDetailsService{
 
     private final static String USER_NOT_FOUND_msg = "User with email %s is not found";
-    // Is the final immutable state always necessary
+    // Is the final immutable state always necessary??
     private UserRepository userRepository;
     private BCryptPasswordEncoder bCryptPasswordEncoder;
     private ConfirmationTokenService confirmationTokenService;

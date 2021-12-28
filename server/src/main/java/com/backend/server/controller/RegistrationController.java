@@ -11,9 +11,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import lombok.AllArgsConstructor;
+
 @RestController
 // Used to create URL mapping
 @RequestMapping(path = "api/v1/registration")
+@AllArgsConstructor
 public class RegistrationController {
     @Autowired
     private RegistrationService registrationService;
