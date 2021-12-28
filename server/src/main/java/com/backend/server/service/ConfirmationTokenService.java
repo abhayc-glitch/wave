@@ -1,5 +1,8 @@
 package com.backend.server.service;
 
+import java.time.LocalDateTime;
+import java.util.Optional;
+
 import com.backend.server.models.ConfirmationToken;
 import com.backend.server.repository.ConfirmationTokenRepository;
 
@@ -16,5 +19,14 @@ public class ConfirmationTokenService {
 
     public void saveConfirmationToken(ConfirmationToken token) {
         confirmationTokenRepository.save(token);
+    }
+    
+    public Optional<ConfirmationToken> getToken(String token) {
+        return confirmationTokenRepository.findByToken(token);
+    }
+
+    public int setConfirmedAt(String token) {
+        return confirmationTokenRepository.updateConfirmedAt(
+                token, LocalDateTime.now());
     }
 }
