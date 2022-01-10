@@ -15,7 +15,7 @@ import lombok.AllArgsConstructor;
 
 @RestController
 // Used to create URL mapping
-@RequestMapping(path = "api/v1/registration")
+@RequestMapping(path = "api/registration")
 @AllArgsConstructor
 public class RegistrationController {
     @Autowired
