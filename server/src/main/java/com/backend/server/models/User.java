@@ -1,195 +1,91 @@
 package com.backend.server.models;
 
-import java.util.Collection;
-import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.SequenceGenerator;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
-
-@Getter
-@Setter
-// Automatically generated equals and hashcode values for key-value pairs to Authenticate
-@EqualsAndHashCode
-// Automatically generates a constructor with a parameter for each field in your class.
-@NoArgsConstructor
-// Class is an entity and is mapped to a database table
 @Entity
-@Table(name = "users")
-public class User implements UserDetails{
+@Table(name = "users", uniqueConstraints = {
+        @UniqueConstraint(columnNames = "username"),
+        @UniqueConstraint(columnNames = "email")
+})
+public class User {
     @Id
-    // Generates a primary key to be created when mapping the user entity.
-    @SequenceGenerator (
-        name = "user_sequence",
-        sequenceName = "user_sequence",
-        allocationSize = 1)
-    @GeneratedValue(
-        strategy = GenerationType.SEQUENCE,
-        generator = "user_sequence"
-    )
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String firstName;
-    private String lastName;
-    private String password;
+    @NotBlank
+    @Size(max = 20)
+    private String username;
+    @NotBlank
+    @Size(max = 50)
+    @Email
     private String email;
-    @Enumerated(EnumType.STRING)
-    private UserRole userRole;
-    private Boolean locked = false;
-    private Boolean enabled = false;
+    @NotBlank
+    @Size
+    private String password;
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private Set<Role> roles = new HashSet<>();
 
-
-    public User(String firstName,
-                String lastName,
-                String email,
-                String password,
-                UserRole userRole) {
-                    this.firstName = firstName;
-                    this.lastName = lastName;
-                    this.password = password;
-                    this.email = email;
-                    this.userRole = userRole;
-    }
-    // Returns an array of authorities granted to the user
-    // Authorities like accessing certain APi's for registration
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        SimpleGrantedAuthority authority = new SimpleGrantedAuthority(userRole.name());
-        return Collections.singletonList(authority);
+    public User() {
     }
 
-    @Override
-    public String getPassword() {
-        return password;
+    public User(String username, String email, String password) {
+        this.username = username;
+        this.email = email;
+        this.password = password;
     }
 
-    @Override
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public String getUsername() {
-        return email;
+        return username;
     }
 
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return !locked;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return enabled;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getEmail() {
         return email;
     }
-    
 
-    /**
-     * @return Long return the id
-     */
-    public Long getId() {
-        return id;
-    }
-
-    /**
-     * @param id the id to set
-     */
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    /**
-     * @param firstName the firstName to set
-     */
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    /**
-     * @param lastName the lastName to set
-     */
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    /**
-     * @param password the password to set
-     */
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    /**
-     * @param email the email to set
-     */
     public void setEmail(String email) {
         this.email = email;
     }
 
-    /**
-     * @return UserRole return the userRole
-     */
-    public UserRole getUserRole() {
-        return userRole;
+    public String getPassword() {
+        return password;
     }
 
-    /**
-     * @param userRole the userRole to set
-     */
-    public void setUserRole(UserRole userRole) {
-        this.userRole = userRole;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
-    /**
-     * @return Boolean return the locked
-     */
-    public Boolean isLocked() {
-        return locked;
+    public Set<Role> getRoles() {
+        return roles;
     }
 
-    /**
-     * @param locked the locked to set
-     */
-    public void setLocked(Boolean locked) {
-        this.locked = locked;
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
     }
-
-    /**
-     * @param enabled the enabled to set
-     */
-    public void setEnabled(Boolean enabled) {
-        this.enabled = enabled;
-    }
-
 }
