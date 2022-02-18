@@ -3,6 +3,9 @@ server:
     include-message: always
     include-binding-errors: always
 
+jjwt:
+  secret: this-secret-is-a-very-good-secret
+
 spring:
   datasource:
     password:
